@@ -2,7 +2,7 @@
 
 ![EXCODE BRAND](https://img.shields.io/badge/Brand-EXCODE-blueviolet?style=for-the-badge)
 ![MADE BY](https://img.shields.io/badge/Made%20By-MR%20MIZ-orange?style=for-the-badge)
-![Discord](https://img.shields.io/badge/Discord-Join%20Us-7289DA?style=for-the-badge&logo=discord)
+![Discord]([https://img.shields.io/badge/Discord-Join%20Us-7289DA?style=for-the-badge&logo=discord](https://discord.gg/NxSgSYKEWC))
 
 A high-accuracy automated credential detection system designed to scan videos for usernames, passwords, and other sensitive information using advanced OCR and spatial analysis.
 
