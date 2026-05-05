@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI User/Pass Detector</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="background-blob"></div>
+    <a href="https://discord.gg/NxSgSYKEWC" target="_blank" class="brand-badge">EXCODE SYSTEM</a>
+    <div class="container">
+        <header>
+            <h1>AI <span>Credential</span> Scanner</h1>
+            <p>🔒 Automated security auditing for video content | Created by <b>MR MIZ</b></p>
+            <div class="social-links">
+                <a href="https://discord.gg/NxSgSYKEWC" target="_blank" class="discord-link">
+                    <img src="https://img.shields.io/badge/Discord-Join%20Us-7289DA?style=for-the-badge&logo=discord" alt="Discord">
+                </a>
+            </div>
+        </header>
+
+        <main>
+            <div class="upload-section card">
+                <div class="drop-zone" id="dropZone">
+                    <div class="icon">📁</div>
+                    <p>Drag & Drop your video here or <span>Browse Files</span></p>
+                    <input type="file" id="fileInput" accept="video/*" hidden>
+                </div>
+                <div class="progress-bar-container" id="progressContainer" style="display: none;">
+                    <div class="progress-info">
+                        <span id="statusMsg">Uploading...</span>
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <span id="timerMsg">00:00</span>
+                            <button id="stopScanBtn"
+                                style="display: none; background: #ef4444; border: none; color: white; padding: 4px 10px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.8rem;">STOP</button>
+                        </div>
+                    </div>
+                    <div class="progress-bar-wrapper">
+                        <div class="progress-bar" id="progressBar"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="console-section card" id="consoleSection" style="display: none;">
+                <div class="console-header">
+                    <span>🖥️ Live Debug Console</span>
+                    <button id="clearConsole"
+                        style="background: rgba(239, 68, 68, 0.2); border: 1px solid #ef4444; color: #ef4444; padding: 4px 12px; border-radius: 6px; cursor: pointer; font-size: 0.75rem;">Clear</button>
+                </div>
+                <div class="console-output" id="consoleOutput">
+                    <div class="console-line">Ready to process video...</div>
+                </div>
+            </div>
+
+            <div class="results-section" id="resultsSection" style="display: none;">
+                <div class="results-header"
+                    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                    <h2>Detection Report</h2>
+                    <div class="result-actions">
+                        <button class="btn-secondary" id="toggleTimelineBtn">📊 Timeline</button>
+                        <button class="btn-secondary" id="exportBtn">📥 Export</button>
+                    </div>
+                </div>
+
+                <!-- Timeline Visualization -->
+                <div id="timelineContainer" class="timeline-container" style="display: none;">
+                    <canvas id="timelineCanvas"></canvas>
+                </div>
+
+                <div id="resultsList" class="results-grid">
+                    <!-- Results will be injected here -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Floating Action Button -->
+    <div class="fab-container">
+        <button class="fab-main" id="fabMain">
+            <span>+</span>
+        </button>
+        <div class="fab-menu" id="fabMenu">
+            <button class="fab-item" id="fabTheme" title="Toggle Theme">🌓</button>
+            <button class="fab-item" id="fabSettings" title="Settings">⚙️</button>
+            <button class="fab-item" id="fabFullscreen" title="Fullscreen">⛶</button>
+            <button class="fab-item" id="fabHelp" title="Help">❓</button>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal" id="settingsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Settings</h3>
+                <button class="close-modal" id="closeSettings">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="setting-item">
+                    <label>Sound Notifications</label>
+                    <label class="switch">
+                        <input type="checkbox" id="settingSound" checked>
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+                <div class="setting-item">
+                    <label>Auto-scroll Console</label>
+                    <label class="switch">
+                        <input type="checkbox" id="settingAutoScroll" checked>
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+                <div class="setting-item">
+                    <label>Show Password Strength</label>
+                    <label class="switch">
+                        <input type="checkbox" id="settingStrength" checked>
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+                <div class="setting-item">
+                    <label>Desktop Notifications</label>
+                    <label class="switch">
+                        <input type="checkbox" id="settingNotifications">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+                <div class="setting-item">
+                    <label>Group Duplicates</label>
+                    <label class="switch">
+                        <input type="checkbox" id="settingDuplicates" checked>
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Image Lightbox -->
+    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+        <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+        <img id="lightboxImg" src="" alt="Preview" onclick="event.stopPropagation()">
+    </div>
+
+    <footer>
+        <p>&copy; 2026 EXCODE | Developed by <a href="https://github.com/mr-miz" target="_blank">MR MIZ</a></p>
+    </footer>
+    <script src="/static/script.js"></script>
+</body>
+
+</html>
